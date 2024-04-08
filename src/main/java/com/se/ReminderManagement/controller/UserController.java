@@ -27,9 +27,6 @@ public class UserController {
 	         } catch (UserValidationException e) {
 	             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	         }
-//	    	 catch (DatabaseOperationException e) {
-//	             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-//	         } 
 	    	 catch (Exception e) {
 	             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
 	         }
