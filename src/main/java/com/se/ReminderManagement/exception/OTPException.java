@@ -1,0 +1,10 @@
+package com.se.ReminderManagement.exception;
+
+public class OTPException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
+	public OTPException(String message) {
+		super(message);
+	}
+
+}

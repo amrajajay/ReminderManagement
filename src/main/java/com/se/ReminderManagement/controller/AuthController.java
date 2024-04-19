@@ -44,6 +44,9 @@ public class AuthController {
 		} catch (BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
+		catch (Exception e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
 	}
 
 }

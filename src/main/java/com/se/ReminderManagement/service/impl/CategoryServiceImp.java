@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.se.ReminderManagement.entity.Category;
+import com.se.ReminderManagement.entity.Task;
+import com.se.ReminderManagement.exception.TaskException;
 import com.se.ReminderManagement.repository.CategoryRepository;
 import com.se.ReminderManagement.service.CategoryService;
 
@@ -19,5 +21,17 @@ public class CategoryServiceImp implements CategoryService {
 		// TODO Auto-generated method stub
 		return categoryRepository.findAll();
 	}
+
+	@Override
+	public boolean existsById(String id) {
+		// TODO Auto-generated method stub
+		return categoryRepository.existsById(id);
+	}
+
+	@Override
+	public Category createCategory(Category category) {
+		return categoryRepository.save(category);
+	}
+	
 
 }

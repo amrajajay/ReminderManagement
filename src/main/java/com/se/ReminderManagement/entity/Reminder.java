@@ -41,6 +41,9 @@ public class Reminder {
 	@PrePersist
 	protected void onCreate() {
 		remainderId = UUID.randomUUID().toString();
+		if (remainderId.length() > 99) {
+			remainderId = remainderId.substring(0, 98);
+		}
 	}
 
 	public String getRemainderId() {

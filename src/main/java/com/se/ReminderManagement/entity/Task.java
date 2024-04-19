@@ -10,10 +10,14 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -35,11 +39,23 @@ public class Task {
 	private String description;
 
 	@Column(name = "dueDate", nullable = false)
-	private Date dueDate;
+	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+	private LocalDateTime dueDate;
 
 	@Lob
 	@Column(name = "attachments")
 	private byte[] attachments;
+
+	@Transient
+	private String attachmentsName;
+
+	public String getAttachmentsName() {
+		return attachmentsName;
+	}
+
+	public void setAttachmentsName(String attachmentsName) {
+		this.attachmentsName = attachmentsName;
+	}
 
 	@Column(name = "email", nullable = false, length = 30)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -52,7 +68,10 @@ public class Task {
 
 	@PrePersist
 	protected void onCreate() {
-	    taskId = UUID.randomUUID().toString();
+		taskId = UUID.randomUUID().toString();
+		if (taskId.length() > 99) {
+			taskId = taskId.substring(0, 98);
+		}
 	}
 
 	public String getTaskId() {
@@ -87,11 +106,11 @@ public class Task {
 		this.description = description;
 	}
 
-	public Date getDueDate() {
+	public LocalDateTime getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(LocalDateTime dueDate) {
 		this.dueDate = dueDate;
 	}
 
@@ -119,9 +138,8 @@ public class Task {
 		this.user = user;
 	}
 
-	public Task(
-			String taskId,String categoryId, String title, String description, Date dueDate, byte[] attachments,
-			String email, User user) {
+	public Task(String taskId, String categoryId, String title, String description, LocalDateTime dueDate, byte[] attachments,
+			String attachmentsName, String email, User user) {
 		super();
 		this.taskId = taskId;
 		this.categoryId = categoryId;
@@ -129,6 +147,7 @@ public class Task {
 		this.description = description;
 		this.dueDate = dueDate;
 		this.attachments = attachments;
+		this.attachmentsName = attachmentsName;
 		this.email = email;
 		this.user = user;
 	}
@@ -141,8 +160,8 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [taskId=" + taskId + ", categoryId=" + categoryId + ", title=" + title + ", description="
-				+ description + ", dueDate=" + dueDate + ", attachments=" + Arrays.toString(attachments) + ", email="
-				+ email + ", user=" + user + "]";
+				+ description + ", dueDate=" + dueDate + ", attachments=" + Arrays.toString(attachments)
+				+ ", attachmentsName=" + attachmentsName + ", email=" + email + ", user=" + user + "]";
 	}
 
 }

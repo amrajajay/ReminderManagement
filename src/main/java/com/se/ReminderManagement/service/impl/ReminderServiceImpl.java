@@ -1,8 +1,12 @@
 package com.se.ReminderManagement.service.impl;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +15,8 @@ import com.se.ReminderManagement.entity.Task;
 import com.se.ReminderManagement.enumerators.NotificationMethod;
 import com.se.ReminderManagement.repository.ReminderRepository;
 import com.se.ReminderManagement.service.ReminderService;
+
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class ReminderServiceImpl implements ReminderService {
@@ -35,8 +41,10 @@ public class ReminderServiceImpl implements ReminderService {
 	@Override
 	public void scheduleDefaultReminder(Reminder reminder) {
 		emailSchedulingService.scheduleTaskEmail(reminder.getTask().getDueDate(), reminder.getTask().getEmail(),
-				reminder.getTask().getTitle(),
-				"This is a reminder that your task '\n" + reminder.getTask() + "' is due.");
+				"Task Reminder: " + reminder.getTask().getTitle(),
+				"This is a reminder that your task '" + reminder.getTask().getTitle() + "' is due on "
+						+ reminder.getTask().getDueDate(),
+				reminder.getTask().getAttachments(), reminder.getTask().getAttachmentsName());
 
 	}
 

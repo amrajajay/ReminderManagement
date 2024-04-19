@@ -1,11 +1,20 @@
 package com.se.ReminderManagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
+import com.se.ReminderManagement.service.EmailSender;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -13,23 +22,24 @@ import java.util.concurrent.TimeUnit;
 public class EmailSchedulingService {
 
 	@Autowired
-	private JavaMailSender mailSender;
+	private EmailSender mailSender;
 
 	@Autowired
 	private TaskScheduler taskScheduler;
 
-	public void scheduleTaskEmail(Date dueDate, String email, String subject, String body) {
-		Runnable emailTask = () -> sendEmail(email, subject, body);
+	public void scheduleTaskEmail(LocalDateTime dueDate, String email, String subject, String body,
+			byte[] attachmentData, String attachmentName) {
+
+		Runnable emailTask = () -> {
+			try {
+				mailSender.sendEmailWithAttachment(email, subject, body, attachmentData, attachmentName);
+			} catch (MessagingException e) {
+				e.printStackTrace(); // Proper error handling should be implemented
+			}
+		};
 
 		// Schedule the task for the due date
-		taskScheduler.schedule(emailTask, dueDate);
-	}
-
-	private void sendEmail(String to, String subject, String text) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(text);
-		mailSender.send(message);
+		Date startTime = Date.from(dueDate.atZone(ZoneId.systemDefault()).toInstant());
+		taskScheduler.schedule(emailTask, startTime);
 	}
 }

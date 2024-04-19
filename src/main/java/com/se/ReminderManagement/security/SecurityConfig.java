@@ -75,7 +75,7 @@ public class SecurityConfig {
 
 		httpSecurity.csrf().disable().authorizeRequests()
 				// dont authenticate this particular request
-				.requestMatchers("/user/createUser", "/login/authenticate").permitAll().requestMatchers("/error")
+				.requestMatchers("/user/createUser", "/login/authenticate","/user/generate-otp","/user/validate-otp-reset-password").permitAll().requestMatchers("/error")
 				.permitAll()
 				.requestMatchers("/swagger-ui/**","/favicon.ico", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**")
 				.permitAll()
