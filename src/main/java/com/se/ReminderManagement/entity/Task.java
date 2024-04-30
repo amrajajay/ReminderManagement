@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -160,7 +161,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [taskId=" + taskId + ", categoryId=" + categoryId + ", title=" + title + ", description="
-				+ description + ", dueDate=" + dueDate + ", attachments=" + Arrays.toString(attachments)
+				+ description + ", dueDate=" + dueDate + ", attachments=" + new ByteArrayResource(attachments)
 				+ ", attachmentsName=" + attachmentsName + ", email=" + email + ", user=" + user + "]";
 	}
 

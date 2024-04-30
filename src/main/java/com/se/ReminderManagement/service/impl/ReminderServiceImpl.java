@@ -1,13 +1,7 @@
 package com.se.ReminderManagement.service.impl;
 
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
 import com.se.ReminderManagement.entity.Reminder;
@@ -16,7 +10,6 @@ import com.se.ReminderManagement.enumerators.NotificationMethod;
 import com.se.ReminderManagement.repository.ReminderRepository;
 import com.se.ReminderManagement.service.ReminderService;
 
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class ReminderServiceImpl implements ReminderService {

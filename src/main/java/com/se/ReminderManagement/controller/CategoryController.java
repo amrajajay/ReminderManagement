@@ -42,8 +42,6 @@ public class CategoryController {
 	}
 
 	@PostMapping("/createCategory")
-//	public ResponseEntity<?> createCategory(@RequestParam(value = "name", required = true) String name,
-//			@RequestParam(value  = "description", required = false) String description) {
 	public ResponseEntity<?> createCategory(@Valid @RequestBody Category cat, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
